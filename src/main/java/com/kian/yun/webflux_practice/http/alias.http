@@ -1,0 +1,5 @@
+###
+GET http://localhost:8080/alias/v1/status
+
+###
+GET http://localhost:8080/alias/v1/fluxToMono
