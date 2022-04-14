@@ -23,6 +23,9 @@ public class AliasRouter {
                         .POST("/", aliasHandler::save)
                         .GET("/{id}", aliasHandler::get)
                         .GET("/", aliasHandler::getList)
+                        .PUT("/{id}", aliasHandler::put)
+                        .DELETE("/{id}", aliasHandler::delete)
+
                         .GET("/fluxToMono", aliasHandler::fluxToMono)
                         .GET("/fluxCreate", aliasHandler::fluxCreate)
                 ).build();

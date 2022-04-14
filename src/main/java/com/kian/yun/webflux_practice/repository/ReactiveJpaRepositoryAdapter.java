@@ -18,21 +18,24 @@ public abstract class ReactiveJpaRepositoryAdapter<T, ID, I extends CrudReposito
     public <S extends T> Mono<S> save(S entity) {
         return Mono
                 .fromCallable(() -> delegate.save(entity))
-                .subscribeOn(scheduler);
+                .subscribeOn(scheduler)
+                .log();
     }
 
     @Override
     public <S extends T> Flux<S> saveAll(Iterable<S> entities) {
         return Mono.fromCallable(() -> delegate.saveAll(entities))
                 .flatMapMany(Flux::fromIterable)
-                .subscribeOn(scheduler);
+                .subscribeOn(scheduler)
+                .log();
     }
 
     @Override
     public <S extends T> Flux<S> saveAll(Publisher<S> entityStream) {
         return Flux.from(entityStream)
                 .flatMap(entity -> Mono.fromCallable(() -> delegate.save(entity)))
-                .subscribeOn(scheduler);
+                .subscribeOn(scheduler)
+                .log();
     }
 
     @Override
@@ -41,7 +44,8 @@ public abstract class ReactiveJpaRepositoryAdapter<T, ID, I extends CrudReposito
                 .flatMap(result -> result
                         .map(Mono::just)
                         .orElseGet(Mono::empty))
-                .subscribeOn(scheduler);
+                .subscribeOn(scheduler)
+                .log();
     }
 
     @Override
@@ -51,21 +55,24 @@ public abstract class ReactiveJpaRepositoryAdapter<T, ID, I extends CrudReposito
                         delegate.findById(actualId)
                                 .map(Mono::just)
                                 .orElseGet(Mono::empty))
-                .subscribeOn(scheduler);
+                .subscribeOn(scheduler)
+                .log();
     }
 
     @Override
     public Mono<Boolean> existsById(ID id) {
         return Mono
                 .fromCallable(() -> delegate.existsById(id))
-                .subscribeOn(scheduler);
+                .subscribeOn(scheduler)
+                .log();
     }
 
     @Override
     public Mono<Boolean> existsById(Publisher<ID> id) {
         return Mono.from(id)
                 .flatMap(actualId -> Mono.fromCallable(() -> delegate.existsById(actualId)))
-                .subscribeOn(scheduler);
+                .subscribeOn(scheduler)
+                .log();
     }
 
     @Override
@@ -73,7 +80,8 @@ public abstract class ReactiveJpaRepositoryAdapter<T, ID, I extends CrudReposito
         return Mono
                 .fromCallable(delegate::findAll)
                 .flatMapMany(Flux::fromIterable)
-                .subscribeOn(scheduler);
+                .subscribeOn(scheduler)
+                .log();
     }
 
     @Override
@@ -81,7 +89,8 @@ public abstract class ReactiveJpaRepositoryAdapter<T, ID, I extends CrudReposito
         return Mono
                 .fromCallable(() -> delegate.findAllById(ids))
                 .flatMapMany(Flux::fromIterable)
-                .subscribeOn(scheduler);
+                .subscribeOn(scheduler)
+                .log();
     }
 
     @Override
@@ -90,42 +99,48 @@ public abstract class ReactiveJpaRepositoryAdapter<T, ID, I extends CrudReposito
                 .from(idStream)
                 .buffer()
                 .flatMap(ids -> Flux.fromIterable(delegate.findAllById(ids)))
-                .subscribeOn(scheduler);
+                .subscribeOn(scheduler)
+                .log();
     }
 
     @Override
     public Mono<Long> count() {
         return Mono
                 .fromCallable(delegate::count)
-                .subscribeOn(scheduler);
+                .subscribeOn(scheduler)
+                .log();
     }
 
     @Override
     public Mono<Void> deleteById(ID id) {
         return Mono
                 .<Void>fromRunnable(() -> delegate.deleteById(id))
-                .subscribeOn(scheduler);
+                .subscribeOn(scheduler)
+                .log();
     }
 
     @Override
     public Mono<Void> deleteById(Publisher<ID> id) {
         return Mono.from(id)
                 .flatMap(actualId -> Mono.<Void>fromRunnable(() -> delegate.deleteById(actualId)))
-                .subscribeOn(scheduler);
+                .subscribeOn(scheduler)
+                .log();
     }
 
     @Override
     public Mono<Void> delete(T entity) {
         return Mono
                 .<Void>fromRunnable(() -> delegate.delete(entity))
-                .subscribeOn(scheduler);
+                .subscribeOn(scheduler)
+                .log();
     }
 
     @Override
     public Mono<Void> deleteAll(Iterable<? extends T> entities) {
         return Mono
                 .<Void>fromRunnable(() -> delegate.deleteAll(entities))
-                .subscribeOn(scheduler);
+                .subscribeOn(scheduler)
+                .log();
     }
 
     @Override
@@ -134,13 +149,15 @@ public abstract class ReactiveJpaRepositoryAdapter<T, ID, I extends CrudReposito
                 .flatMap(entity -> Mono
                         .fromRunnable(() -> delegate.delete(entity))
                         .subscribeOn(scheduler))
-                .then();
+                .then()
+                .log();
     }
 
     @Override
     public Mono<Void> deleteAll() {
         return Mono
                 .<Void>fromRunnable(delegate::deleteAll)
-                .subscribeOn(scheduler);
+                .subscribeOn(scheduler)
+                .log();
     }
 }

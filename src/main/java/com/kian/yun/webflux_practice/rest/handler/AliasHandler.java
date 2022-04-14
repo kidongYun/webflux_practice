@@ -36,6 +36,14 @@ public class AliasHandler {
                 .flatMap(request -> ServerResponse.ok().bodyValue(request));
     }
 
+    public Mono<ServerResponse> put(ServerRequest serverRequest) {
+        return Mono.empty();
+    }
+
+    public Mono<ServerResponse> delete(ServerRequest serverRequest) {
+        return Mono.empty();
+    }
+
     public Mono<ServerResponse> getStatus(ServerRequest serverRequest) {
         return Mono.empty();
     }
