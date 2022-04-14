@@ -1,5 +1,6 @@
 package com.kian.yun.webflux_practice.repository;
 
+import lombok.RequiredArgsConstructor;
 import org.reactivestreams.Publisher;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
@@ -7,10 +8,11 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
+@RequiredArgsConstructor
 public abstract class ReactiveJpaRepositoryAdapter<T, ID, I extends CrudRepository<T, ID>> implements ReactiveCrudRepository<T, ID> {
 
-    protected I delegate;
-    protected Scheduler scheduler;
+    protected final I delegate;
+    protected final Scheduler scheduler;
 
     @Override
     public <S extends T> Mono<S> save(S entity) {

@@ -1,4 +1,6 @@
 package com.kian.yun.webflux_practice.repository;
 
-public interface AliasCustomRepository {
-}
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface AliasCustomRepository {}

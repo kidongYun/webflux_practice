@@ -1,3 +1,18 @@
+### ALIAS SAVE
+POST http://localhost:8080/alias/v1
+Content-Type: application/json
+
+{
+  "name" : "orange",
+  "color" : "yellow"
+}
+
+### ALIAS GET
+GET http://localhost:8080/alias/v1/2
+
+### ALIAS GET LIST
+GET http://localhost:8080/alias/v1
+
 ###
 GET http://localhost:8080/alias/v1/status
 

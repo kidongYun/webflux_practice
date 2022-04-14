@@ -1,6 +1,6 @@
-package com.kian.yun.webflux_practice.router;
+package com.kian.yun.webflux_practice.rest.router;
 
-import com.kian.yun.webflux_practice.handler.AliasHandler;
+import com.kian.yun.webflux_practice.rest.handler.AliasHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -20,8 +20,11 @@ public class AliasRouter {
     public RouterFunction<ServerResponse> aliasRoute(AliasHandler aliasHandler) {
         return route()
                 .path("/alias/v1", builder -> builder
-                        .GET("/status", aliasHandler::getStatus)
+                        .POST("/", aliasHandler::save)
+                        .GET("/{id}", aliasHandler::get)
+                        .GET("/", aliasHandler::getList)
                         .GET("/fluxToMono", aliasHandler::fluxToMono)
+                        .GET("/fluxCreate", aliasHandler::fluxCreate)
                 ).build();
     }
 }
